@@ -23,7 +23,7 @@ import {
 
 const Home = ({ offers }) => {
     const theme = useTheme();
-    const [sliderValue, setSliderValue] = useState(5);
+    const [sliderValue, setSliderValue] = useState(300);
     const [showTooltip, setShowTooltip] = useState(false);
 
     let visaOfficeLocation = {
@@ -36,7 +36,7 @@ const Home = ({ offers }) => {
             <Heading mb={4}>Current Offers</Heading>
             <Divider />
             <Heading py={3} size="sm">
-                Set Distance
+                Set Distance - {sliderValue}m
             </Heading>
             <Slider
                 aria-label="slider-ex-1"
