@@ -124,7 +124,7 @@ const Home = ({ offers }) => {
 
 export async function getServerSideProps() {
     try {
-        const response = await axios.get("http://localhost:8000/offers");
+        const response = await axios.get("https://close2me-service.onrender.com/offers");
         const offers = response.data;
 
         return {

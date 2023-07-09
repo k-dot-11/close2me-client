@@ -77,7 +77,7 @@ export default function CreateOffer() {
 
         // Send the payload to the API endpoint
         axios
-            .post("http://localhost:8000/offers/", payload)
+            .post("https://close2me-service.onrender.com/offers/", payload)
             .then((response) => {
                 console.log("Offer created successfully");
                 console.log(response.data);

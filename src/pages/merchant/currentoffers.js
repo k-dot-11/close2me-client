@@ -18,7 +18,7 @@ const CurrentOffers = ({ offers }) => {
 
     const handleSwitchChange = async (offer, checked, index) => {
         offer.enabled = checked ? 1 : 0;
-        axios.put(`http://localhost:8000/offers/${offer.offer_id}`, { offer });
+        axios.put(`https://close2me-service.onrender.com/${offer.offer_id}`, { offer });
         let updatedOffersData = [...offersData];
         updatedOffersData[index].enabled = checked ? 1 : 0;
         setOffersData(updatedOffersData);
@@ -80,7 +80,7 @@ const CurrentOffers = ({ offers }) => {
 
 export async function getServerSideProps() {
     try {
-        const response = await axios.get("http://localhost:8000/offers");
+        const response = await axios.get("https://close2me-service.onrender.com/offers");
         const offers = response.data;
 
         return {
