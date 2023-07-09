@@ -1,4 +1,5 @@
 import {
+    Box,
     Divider,
     Flex,
     HStack,
@@ -18,8 +19,15 @@ import {
     SliderTrack,
     SliderFilledTrack,
     SliderThumb,
-    SliderMark,
 } from "@chakra-ui/react";
+import {
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon,
+} from "@chakra-ui/react";
+import { InfoIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 
 const Home = ({ offers }) => {
     const theme = useTheme();
@@ -35,14 +43,18 @@ const Home = ({ offers }) => {
         <Flex flexDirection="column" p={3}>
             <Heading mb={4}>Current Offers</Heading>
             <Divider />
-            <Heading py={3} size="sm">
+            <Heading pt={3} size="sm">
                 Set Distance - {sliderValue}m
             </Heading>
+            <Flex align='center' py={2}>
+                <InfoOutlineIcon mr = {3} boxSize='3' />
+                <Text fontSize='xs'> 0 means no limit on distance</Text>
+            </Flex>
             <Slider
                 aria-label="slider-ex-1"
                 defaultValue={300}
                 min={0}
-                max={2000}
+                max={3000}
                 onChange={(v) => setSliderValue(v)}
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
@@ -74,7 +86,7 @@ const Home = ({ offers }) => {
                     },
                     visaOfficeLocation
                 );
-                if (distanceFromOrigin > sliderValue) return;
+                if (distanceFromOrigin > sliderValue && sliderValue != 0) return;
                 return (
                     <Flex
                         key={offer.offer_id}
@@ -115,6 +127,45 @@ const Home = ({ offers }) => {
                             </HStack>
                         </Flex>
                         <Text>{offer.offer_description}</Text>
+                        <Accordion allowToggle mt={2}>
+                            <AccordionItem p={1}>
+                                <h2>
+                                    <AccordionButton>
+                                        <Box
+                                            as="span"
+                                            flex="1"
+                                            textAlign="left"
+                                        >
+                                            Rewards Description
+                                        </Box>
+                                        <AccordionIcon />
+                                    </AccordionButton>
+                                </h2>
+                                <AccordionPanel pb={4}>
+                                    {offer.rewards_description}
+                                </AccordionPanel>
+                            </AccordionItem>
+
+                            <AccordionItem p={1}>
+                                <h2>
+                                    <AccordionButton>
+                                        <Box
+                                            as="span"
+                                            flex="1"
+                                            textAlign="left"
+                                        >
+                                            Accessibility Features
+                                        </Box>
+                                        <AccordionIcon />
+                                    </AccordionButton>
+                                </h2>
+                                <AccordionPanel pb={4}>
+                                    Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.
+                                </AccordionPanel>
+                            </AccordionItem>
+                        </Accordion>
                     </Flex>
                 );
             })}
@@ -124,7 +175,9 @@ const Home = ({ offers }) => {
 
 export async function getServerSideProps() {
     try {
-        const response = await axios.get("https://close2me-service.onrender.com/offers");
+        const response = await axios.get(
+            "https://close2me-service.onrender.com/offers"
+        );
         const offers = response.data;
 
         return {

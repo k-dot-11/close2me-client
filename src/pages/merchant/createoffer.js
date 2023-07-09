@@ -18,6 +18,7 @@ import {
 import { useTheme } from "@emotion/react";
 import { AddIcon } from "@chakra-ui/icons";
 import axios from "axios";
+import { generateRandomLatitude, generateRandomLongitude } from "@/utils/coordinateGenerator";
 
 export default function CreateOffer() {
     const theme = useTheme();
@@ -65,8 +66,10 @@ export default function CreateOffer() {
         // Prepare the payload data
         const payload = {
             merchant_id: 2,
-            merchant_name: "Naruto",
+            merchant_name: "Levi's",
             merchant_location: "Los Angeles",
+            merchant_latitude : generateRandomLatitude(),
+            merchant_longitude : generateRandomLongitude(),
             inclusion_tags: formData.inclusionTags,
             other_tags: formData.otherTags,
             offer_description: formData.offerDescription,

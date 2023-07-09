@@ -1,4 +1,4 @@
-import { DragHandleIcon, EditIcon, InfoIcon, StarIcon } from "@chakra-ui/icons";
+import { DragHandleIcon, EditIcon, InfoIcon, StarIcon, ViewIcon } from "@chakra-ui/icons";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { SimpleGrid } from "@chakra-ui/react";
 import { useTheme } from "@emotion/react";
@@ -57,7 +57,7 @@ export default function Home() {
                             <Text>Visa Insights</Text>
                         </Flex>
                     </Link>
-                    <Link href="merchant/profile">
+                    <Link href="customer">
                         <Flex
                             flexDirection="column"
                             align="center"
@@ -66,11 +66,11 @@ export default function Home() {
                             borderRadius="lg"
                             bg="gray.100"
                         >
-                            <DragHandleIcon
+                            <ViewIcon
                                 m={3}
                                 color={theme.colors.secondary}
                             />
-                            <Text>Merchant Profile</Text>
+                            <Text>Customer View</Text>
                         </Flex>
                     </Link>
                 </SimpleGrid>
