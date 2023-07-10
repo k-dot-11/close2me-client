@@ -10,11 +10,30 @@ import {
 } from "@chakra-ui/react";
 import { useTheme } from "@emotion/react";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const CurrentOffers = ({ offers }) => {
+const CurrentOffers = () => {
     const theme = useTheme();
-    const [offersData, setOffersData] = useState(offers);
+    const [offersData, setOffersData] = useState([]);
+    const [isLoading, setLoading] = useState(true);
+
+
+    useEffect( () => {
+        const fetchOffers = async () => {
+            try {
+                const response = await axios.get(
+                    "https://close2me-service.onrender.com/offers"
+                );
+                const offers = response.data;
+                setOffersData(offers);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching offers:", error);
+            }
+        };
+
+        fetchOffers();
+    }, []);
 
     const handleSwitchChange = async (offer, checked, index) => {
         offer.enabled = checked ? 1 : 0;
@@ -78,24 +97,5 @@ const CurrentOffers = ({ offers }) => {
     );
 };
 
-export async function getServerSideProps() {
-    try {
-        const response = await axios.get("https://close2me-service.onrender.com/offers");
-        const offers = response.data;
-
-        return {
-            props: {
-                offers,
-            },
-        };
-    } catch (error) {
-        console.error("Error fetching offers:", error);
-        return {
-            props: {
-                offers: [],
-            },
-        };
-    }
-}
 
 export default CurrentOffers;

@@ -4,6 +4,7 @@ import {
     Flex,
     HStack,
     Heading,
+    Spinner,
     Switch,
     Tag,
     TagLabel,
@@ -13,7 +14,7 @@ import {
 import { useTheme } from "@emotion/react";
 import axios from "axios";
 import { getPreciseDistance } from "geolib";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Slider,
     SliderTrack,
@@ -27,12 +28,32 @@ import {
     AccordionPanel,
     AccordionIcon,
 } from "@chakra-ui/react";
-import { InfoIcon, InfoOutlineIcon } from "@chakra-ui/icons";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 
-const Home = ({ offers }) => {
+const Home = () => {
     const theme = useTheme();
     const [sliderValue, setSliderValue] = useState(300);
     const [showTooltip, setShowTooltip] = useState(false);
+    const [isLoading, setLoading] = useState(true);
+
+    const [offers, setOffers] = useState([]);
+
+    useEffect( () => {
+        const fetchOffers = async () => {
+            try {
+                const response = await axios.get(
+                    "https://close2me-service.onrender.com/offers"
+                );
+                const offersData = response.data;
+                setOffers(offersData);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching offers:", error);
+            }
+        };
+
+        fetchOffers();
+    }, []);
 
     let visaOfficeLocation = {
         latitude: 12.9835579,
@@ -46,9 +67,9 @@ const Home = ({ offers }) => {
             <Heading pt={3} size="sm">
                 Set Distance - {sliderValue}m
             </Heading>
-            <Flex align='center' py={2}>
-                <InfoOutlineIcon mr = {3} boxSize='3' />
-                <Text fontSize='xs'> 0 means no limit on distance</Text>
+            <Flex align="center" py={2}>
+                <InfoOutlineIcon mr={3} boxSize="3" />
+                <Text fontSize="xs"> 0 means no limit on distance</Text>
             </Flex>
             <Slider
                 aria-label="slider-ex-1"
@@ -78,6 +99,7 @@ const Home = ({ offers }) => {
                     />
                 </Tooltip>
             </Slider>
+            {isLoading && <Spinner />}
             {offers.map((offer, index) => {
                 let distanceFromOrigin = getPreciseDistance(
                     {
@@ -86,7 +108,8 @@ const Home = ({ offers }) => {
                     },
                     visaOfficeLocation
                 );
-                if (distanceFromOrigin > sliderValue && sliderValue != 0) return;
+                if (distanceFromOrigin > sliderValue && sliderValue != 0)
+                    return;
                 return (
                     <Flex
                         key={offer.offer_id}
@@ -172,27 +195,5 @@ const Home = ({ offers }) => {
         </Flex>
     );
 };
-
-export async function getServerSideProps() {
-    try {
-        const response = await axios.get(
-            "https://close2me-service.onrender.com/offers"
-        );
-        const offers = response.data;
-
-        return {
-            props: {
-                offers,
-            },
-        };
-    } catch (error) {
-        console.error("Error fetching offers:", error);
-        return {
-            props: {
-                offers: [],
-            },
-        };
-    }
-}
 
 export default Home;
