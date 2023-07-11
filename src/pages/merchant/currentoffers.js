@@ -3,6 +3,7 @@ import {
     Flex,
     HStack,
     Heading,
+    Spinner,
     Switch,
     Tag,
     TagLabel,
@@ -47,6 +48,7 @@ const CurrentOffers = () => {
         <Flex flexDirection="column" p={3}>
             <Heading mb={4}>Current Offers</Heading>
             <Divider />
+            {offersData.length == 0 && <Spinner />}
             {offersData.map((offer, index) => {
                 return (
                     <Flex

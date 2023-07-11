@@ -17,17 +17,17 @@ const NavBar = () => {
             justify="space-between"
             align='center'
         >
-            <Link href="/">
-                <Heading as="h2" size="md" color={theme.colors.secondary}>
-                    Close2Me
+            <Link href="/" >
+                <Heading as="h1" size="lg" color={theme.colors.secondary} display='flex' justifyContent='center'>
+                    offer<Image
+                src="/visa.svg"
+                width={70}
+                height={70}
+                alt="Picture of the author"
+            />rd
                 </Heading>
             </Link>
-            <Image
-                src="/visa.svg"
-                width={100}
-                height={100}
-                alt="Picture of the author"
-            />
+            
         </Flex>
     );
 };

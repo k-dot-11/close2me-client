@@ -1,9 +1,11 @@
 import {
     Box,
+    Button,
     Divider,
     Flex,
     HStack,
     Heading,
+    Portal,
     Spinner,
     Switch,
     Tag,
@@ -29,6 +31,16 @@ import {
     AccordionIcon,
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
+import {
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverHeader,
+    PopoverBody,
+    PopoverArrow,
+    PopoverCloseButton,
+} from "@chakra-ui/react";
+import FilterBody from "@/components/filterbody";
 
 const Home = () => {
     const theme = useTheme();
@@ -38,14 +50,14 @@ const Home = () => {
 
     const [offers, setOffers] = useState([]);
 
-    useEffect( () => {
+    useEffect(() => {
         const fetchOffers = async () => {
             try {
                 const response = await axios.get(
                     "https://close2me-service.onrender.com/offers"
                 );
                 const offersData = response.data;
-                setOffers(offersData);
+                setOffers(offersData.reverse());
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching offers:", error);
@@ -62,7 +74,24 @@ const Home = () => {
 
     return (
         <Flex flexDirection="column" p={3}>
-            <Heading mb={4}>Current Offers</Heading>
+            <Flex justify="space-between">
+                <Heading mb={4}>Current Offers</Heading>
+                <Popover >
+                    <PopoverTrigger>
+                        <Button bgColor={theme.colors.secondary}>Filter</Button>
+                    </PopoverTrigger>
+                    <Portal>
+                        <PopoverContent bgColor = 'gray.200' p={2}>
+                            <PopoverArrow />
+                            <PopoverHeader>Filter</PopoverHeader>
+                            <PopoverCloseButton />
+                            <PopoverBody>
+                                <FilterBody />
+                            </PopoverBody>
+                        </PopoverContent>
+                    </Portal>
+                </Popover>
+            </Flex>
             <Divider />
             <Heading pt={3} size="sm">
                 Set Distance - {sliderValue}m
