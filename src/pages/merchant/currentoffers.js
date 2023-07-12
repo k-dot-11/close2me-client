@@ -38,7 +38,7 @@ const CurrentOffers = () => {
 
     const handleSwitchChange = async (offer, checked, index) => {
         offer.enabled = checked ? 1 : 0;
-        axios.put(`https://close2me-service.onrender.com/offers/${offer.offer_id}`, { offer });
+        //axios.put(`https://close2me-service.onrender.com/offers/${offer.offer_id}`, { offer });
         let updatedOffersData = [...offersData];
         updatedOffersData[index].enabled = checked ? 1 : 0;
         setOffersData(updatedOffersData);
